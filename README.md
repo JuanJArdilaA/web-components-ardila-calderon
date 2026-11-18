@@ -36,7 +36,7 @@ Como el proyecto está construido al 100% con **estándares nativos del navegado
 1. **Apertura directa en el navegador:**
    - Clona este repositorio o descarga los archivos:
      ```bash
-     git clone https://github.com/TU_USUARIO/web-components-ardila-calderon.git
+     git clone https://github.com/JuanJArdilaA/web-components-ardila-calderon.git
      ```
    - Abre el archivo `index.html` haciendo doble clic sobre él en cualquier navegador moderno (Chrome, Edge, Firefox o Safari).
 
