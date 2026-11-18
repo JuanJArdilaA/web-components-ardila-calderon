@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veterinaria Patitas Felices | Web Components & HTML Templates</title>
+  <!-- Script cargado en el <head> con defer según las instrucciones de la práctica -->
+  <script src="js/main.js" defer></script>
+  <style>
+    :root {
+      --bg-page: #f0f4f8;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --accent: #0d9488;
+      --accent-dark: #0f766e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 3rem;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+      color: #ffffff;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(15, 118, 110, 0.2);
+      margin-bottom: 2.5rem;
+    }
+
+    header h1 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    header p {
+      font-size: 1rem;
+      opacity: 0.92;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .authors-badge {
+      display: inline-block;
+      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 0.35rem 1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 2px solid #cbd5e1;
+      padding-bottom: 0.75rem;
+    }
+
+    .section-title h2 {
+      font-size: 1.35rem;
+      color: #0f172a;
+    }
+
+    .section-title span {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      background: #e2e8f0;
+      padding: 0.25rem 0.75rem;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+
+    .grid-mascotas {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🐾 Clínica Veterinaria Patitas Felices</h1>
+    <p>Panel de control de pacientes implementado con Web Components nativos, Shadow DOM y HTML Templates sin librerías externas.</p>
+    <div class="authors-badge">
+      Desarrollado por: Juan José Ardila Arévalo &amp; Miguel Ricardo Calderón
+    </div>
+  </header>
+
+  <main>
+    <div class="section-title">
+      <h2>Fichas de Pacientes Registrados</h2>
+      <span>4 instancias activas de &lt;ficha-mascota&gt;</span>
+    </div>
+
+    <!-- =========================================================================
+         R1. Template propio: <template> con su <style> encapsulado y marcadores
+         vacíos (.mascota-nombre, .mascota-especie, .mascota-edad, .mascota-vacuna)
+         que se rellenan dinámicamente desde JavaScript (js/main.js).
+         ========================================================================= -->
+    <template id="ficha-mascota-template">
+      <style>
+        :host {
+          display: block;
+          font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        .card {
+          background: #ffffff;
+          border-radius: 14px;
+          border: 1px solid #e2e8f0;
+          box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+          overflow: hidden;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+        }
+
+        .card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 12px 24px rgba(13, 148, 136, 0.14);
+        }
+
+        .card-header {
+          background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+          padding: 1.2rem 1.25rem;
+          border-bottom: 1px solid #99f6e4;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .mascota-nombre {
+          margin: 0;
+          font-size: 1.25rem;
+          color: #115e59;
+          font-weight: 700;
+        }
+
+        .mascota-especie {
+          background-color: #0d9488;
+          color: #ffffff;
+          font-size: 0.78rem;
+          font-weight: 600;
+          padding: 0.25rem 0.7rem;
+          border-radius: 999px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        .card-body {
+          padding: 1.25rem;
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
+        }
+
+        .dato-fila {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-bottom: 0.5rem;
+          border-bottom: 1px dashed #e2e8f0;
+          font-size: 0.94rem;
+        }
+
+        .dato-etiqueta {
+          color: #64748b;
+          font-weight: 500;
+        }
+
+        .dato-valor {
+          color: #0f172a;
+          font-weight: 600;
+        }
+
+        .vacuna-alerta {
+          color: #b45309;
+          background: #fef3c7;
+          padding: 0.2rem 0.55rem;
+          border-radius: 6px;
+          font-size: 0.85rem;
+        }
+
+        .nota-veterinaria {
+          margin-top: auto;
+          background-color: #f8fafc;
+          border-left: 4px solid #0d9488;
+          padding: 0.75rem 0.9rem;
+          border-radius: 0 8px 8px 0;
+          font-size: 0.88rem;
+          color: #334155;
+        }
+
+        .nota-titulo {
+          display: block;
+          font-size: 0.75rem;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: #0f766e;
+          font-weight: 700;
+          margin-bottom: 0.25rem;
+        }
+      </style>
+
+      <article class="card">
+        <div class="card-header">
+          <!-- Marcadores vacíos que se rellenan desde JavaScript (R1 y R3) -->
+          <h3 class="mascota-nombre"></h3>
+          <span class="mascota-especie"></span>
+        </div>
+
+        <div class="card-body">
+          <div class="dato-fila">
+            <span class="dato-etiqueta">🎂 Edad actual:</span>
+            <!-- Marcador vacío para la edad -->
+            <span class="dato-valor mascota-edad"></span>
+          </div>
+
+          <div class="dato-fila">
+            <span class="dato-etiqueta">💉 Próxima vacuna:</span>
+            <!-- Marcador vacío para la próxima vacuna -->
+            <span class="dato-valor vacuna-alerta mascota-vacuna"></span>
+          </div>
+
+          <div class="nota-veterinaria">
+            <span class="nota-titulo">📋 Observaciones clínicas (Slot):</span>
+            <!-- R4. Slot: marcador <slot> para inyectar una nota o descripción libre -->
+            <slot>Paciente sin observaciones adicionales registradas en consulta.</slot>
+          </div>
+        </div>
+      </article>
+    </template>
+
+    <!-- =========================================================================
+         R5. Reutilización: La página muestra al menos 3 instancias (aquí 4)
+         del componente <ficha-mascota> con datos y notas distintos.
+         ========================================================================= -->
+    <section class="grid-mascotas">
+
+      <!-- Instancia 1 -->
+      <ficha-mascota
+        nombre="Max"
+        especie="Perro - Golden Retriever"
+        edad="3 años"
+        proxima-vacuna="Rabia (12 Dic 2026)">
+        Presenta excelente estado nutricional (31 kg). Revisar oído derecho en el próximo control y mantener dieta hipoalergénica.
+      </ficha-mascota>
+
+      <!-- Instancia 2 -->
+      <ficha-mascota
+        nombre="Mishi"
+        especie="Gato - Siamés"
+        edad="1 año y 6 meses"
+        proxima-vacuna="Triple Felina (25 Nov 2026)">
+        Paciente algo nerviosa durante el examen físico. Se aplicó desparasitación interna el mes pasado sin reacciones adversas.
+      </ficha-mascota>
+
+      <!-- Instancia 3 -->
+      <ficha-mascota
+        nombre="Copito"
+        especie="Conejo - Belier"
+        edad="8 meses"
+        proxima-vacuna="Mixomatosis (05 Ene 2027)">
+        Control dental al día con desgaste correcto de incisivos. Se recomienda aumentar la porción diaria de heno fresco.
+      </ficha-mascota>
+
+      <!-- Instancia 4 (demuestra también el funcionamiento con otra mascota exótica) -->
+      <ficha-mascota
+        nombre="Rocco"
+        especie="Perro - Bulldog Francés"
+        edad="4 años"
+        proxima-vacuna="Sextuple Canina (19 Feb 2027)">
+        Monitorear respiración en días calurosos y evitar paseos al mediodía. Limpieza de pliegues faciales dos veces por semana.
+      </ficha-mascota>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>Actividad Evaluativa: Web Components, HTML Templates y Frameworks &bull; Noviembre 2026</p>
+  </footer>
+
+</body>
+</html>
